@@ -52,7 +52,7 @@ public class CalendarModel {
                 // Put Sunday at the end of the array
                 if (idx == Calendar.SUNDAY) {
                     array[array.length - 1] = day;
-                    // Shift all other days to`  the start of the array
+                    // Shift all other days to the start of the array
                 } else {
                     array[idx - 2] = day;
                 }

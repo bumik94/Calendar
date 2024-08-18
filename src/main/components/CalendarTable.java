@@ -5,25 +5,25 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.util.Date;
 
 public class CalendarTable extends JPanel {
-    String[] daysOfWeek;    // JTable column names
-    Date[][] daysOfMonth; // JTable row data
-    CalendarModel calendarModel;
+    CalendarModel calendar;
 
     public CalendarTable() {
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        this.calendar = new CalendarModel();
 
-        this.calendarModel = new CalendarModel();
-        this.daysOfWeek = calendarModel.getDaysOfWeek();
-        this.daysOfMonth = calendarModel.getDaysOfMonth();
-
-        JTable calendarTable = new JTable(new CalendarTableModel(daysOfMonth, daysOfWeek));
+        // Set JTable properties
+        JTable calendarTable = new JTable(new CalendarTableModel(calendar.getDaysOfMonth(), calendar.getDaysOfWeek()));
         calendarTable.setDefaultRenderer(Object.class, new DateRenderer());
         calendarTable.setCellSelectionEnabled(true);
         initCellSizes(calendarTable);
+
+        // Set JTableHeader properties
+        JTableHeader tableHeader = calendarTable.getTableHeader();
+        tableHeader.setReorderingAllowed(false);
+        tableHeader.setResizingAllowed(false);
 
         this.add(calendarTable.getTableHeader(), BorderLayout.PAGE_START);
         this.add(calendarTable, BorderLayout.CENTER);
@@ -39,7 +39,7 @@ public class CalendarTable extends JPanel {
         TableColumn column;
         for (int i = 0; i < model.getColumnCount(); i++) {
             column = table.getColumnModel().getColumn(i);
-            column.setPreferredWidth(30);
+            column.setPreferredWidth(34);
         }
     }
 }
