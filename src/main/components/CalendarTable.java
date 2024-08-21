@@ -5,6 +5,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.Calendar;
 
 public class CalendarTable extends JPanel {
     CalendarModel calendar;
@@ -15,18 +17,45 @@ public class CalendarTable extends JPanel {
         this.calendar = new CalendarModel();
 
         // Set JTable properties
-        JTable calendarTable = new JTable(new CalendarTableModel(calendar.getDaysOfMonth(), calendar.getDaysOfWeek()));
+        JTable calendarTable = new JTable(new CalendarTableModel(
+                calendar.getDaysOfMonth(), calendar.getDaysOfWeek(Calendar.SHORT_STANDALONE)));
         calendarTable.setDefaultRenderer(Object.class, new DateRenderer());
         calendarTable.setCellSelectionEnabled(true);
         initCellSizes(calendarTable);
 
         // Set JTableHeader properties
-        JTableHeader tableHeader = calendarTable.getTableHeader();
+        JTableHeader tableHeader = getTableHeader(calendarTable);
+        calendarTable.setTableHeader(tableHeader);
+
+        // Add components to the content pane
+        this.add(calendarTable.getTableHeader(), BorderLayout.PAGE_START);
+        this.add(calendarTable, BorderLayout.CENTER);
+    }
+
+    /**
+     * Creates new JTableHeader with ColumnModel of the table and tooltips showing full names of days.
+     * Also disables reordering and resizing.
+     *
+     * @param table JTable whose column model will be used to create new JTableHeader
+     * @return a new JTableHeader with tooltips and current ColumnModel
+     */
+    private JTableHeader getTableHeader(JTable table) {
+        JTableHeader tableHeader = new JTableHeader(table.getColumnModel()) {
+            // Array of names used for showing column tooltips
+            final String[] columnToolTips = calendar.getDaysOfWeek(Calendar.LONG);
+
+            public String getToolTipText(MouseEvent e) {
+                String tip = null;
+                Point p = e.getPoint();
+                int index = columnModel.getColumnIndexAtX(p.x);
+                int realIndex = columnModel.getColumn(index).getModelIndex();
+                return columnToolTips[realIndex];
+            }
+        };
         tableHeader.setReorderingAllowed(false);
         tableHeader.setResizingAllowed(false);
 
-        this.add(calendarTable.getTableHeader(), BorderLayout.PAGE_START);
-        this.add(calendarTable, BorderLayout.CENTER);
+        return tableHeader;
     }
 
     /**

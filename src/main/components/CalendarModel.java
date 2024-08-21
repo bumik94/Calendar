@@ -38,10 +38,10 @@ public class CalendarModel {
      *
      * @return A String array of short form days of week in a default locale
      */
-    public String[] getDaysOfWeek() {
+    public String[] getDaysOfWeek(int style) {
         Map<String, Integer> daysOfWeekMap = calendar.getDisplayNames(
                 Calendar.DAY_OF_WEEK,
-                Calendar.SHORT_STANDALONE,
+                style,
                 Locale.getDefault());
         String[] array = new String[7];
 

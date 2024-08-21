@@ -1,6 +1,7 @@
 package main.components;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumnModel;
 import java.util.Date;
 
 public class CalendarTableModel extends AbstractTableModel {

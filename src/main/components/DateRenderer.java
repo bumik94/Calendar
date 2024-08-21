@@ -7,8 +7,7 @@ import javax.swing.table.TableCellRenderer;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateRenderer extends DefaultTableCellRenderer
-        implements TableCellRenderer {
+public class DateRenderer extends DefaultTableCellRenderer {
 
     Calendar calendar;
 
