@@ -15,8 +15,8 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10, 10, 10, 10);
-//        c.insets = new Insets(1, 1, 1, 1);
+//        c.insets = new Insets(10, 10, 10, 10);
+        c.insets = new Insets(6, 6, 6, 6);
 
         // Lay out components and set visibility
         frame.add(new CalendarTable(), c);

@@ -1,6 +1,7 @@
 package main.components;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -9,27 +10,67 @@ import java.awt.event.MouseEvent;
 import java.util.Calendar;
 
 public class CalendarTable extends JPanel {
-    CalendarModel calendar;
+    private final CalendarModel calendar;
+    private final DefaultTableModel tableModel;
+    private final JLabel yearLabel;
+    private final JLabel monthLabel;
 
     public CalendarTable() {
-        this.setLayout(new BorderLayout());
+        // Set JPanel properties
+        this.setLayout(new GridBagLayout());
         this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        GridBagConstraints c = new GridBagConstraints();
+
+        // Initialize fields
         this.calendar = new CalendarModel();
+        this.yearLabel = new JLabel(Integer.toString(calendar.getYear()));
+        this.monthLabel = new JLabel(calendar.getFieldName(Calendar.MONTH, Calendar.LONG_STANDALONE));
+        this.tableModel = new DefaultTableModel(
+                calendar.getDaysOfMonth(),
+                calendar.getDaysOfWeek(Calendar.SHORT_STANDALONE));
 
         // Set JTable properties
-        JTable calendarTable = new JTable(new CalendarTableModel(
-                calendar.getDaysOfMonth(), calendar.getDaysOfWeek(Calendar.SHORT_STANDALONE)));
+        JTable calendarTable = new JTable(tableModel);
         calendarTable.setDefaultRenderer(Object.class, new DateRenderer());
         calendarTable.setCellSelectionEnabled(true);
+        calendarTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         initCellSizes(calendarTable);
 
         // Set JTableHeader properties
         JTableHeader tableHeader = getTableHeader(calendarTable);
         calendarTable.setTableHeader(tableHeader);
 
+        //TODO: Update table procedure
+        // Refactor into a method
+        // Add controls to manipulate calendar
+
+        // change calendar fields
+        calendar.setYear(2027);
+        calendar.setMonth(Calendar.FEBRUARY);
+        // Update labels
+        yearLabel.setText(Integer.toString(calendar.getYear()));
+        monthLabel.setText(calendar.getFieldName(Calendar.MONTH, Calendar.LONG_STANDALONE));
+        // Update table and resize again
+        tableModel.setDataVector(calendar.getDaysOfMonth(), calendar.getDaysOfWeek(Calendar.SHORT_STANDALONE));
+        tableModel.fireTableDataChanged();
+        initCellSizes(calendarTable);
+
         // Add components to the content pane
-        this.add(calendarTable.getTableHeader(), BorderLayout.PAGE_START);
-        this.add(calendarTable, BorderLayout.CENTER);
+        c.gridx = 0;
+        c.gridy = 0;
+        this.add(yearLabel, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        this.add(monthLabel, c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        this.add(calendarTable.getTableHeader(), c);
+
+        c.gridx = 0;
+        c.gridy = 3;
+        this.add(calendarTable, c);
     }
 
     /**
@@ -40,6 +81,7 @@ public class CalendarTable extends JPanel {
      * @return a new JTableHeader with tooltips and current ColumnModel
      */
     private JTableHeader getTableHeader(JTable table) {
+
         JTableHeader tableHeader = new JTableHeader(table.getColumnModel()) {
             // Array of names used for showing column tooltips
             final String[] columnToolTips = calendar.getDaysOfWeek(Calendar.LONG);
@@ -64,11 +106,10 @@ public class CalendarTable extends JPanel {
      */
     private void initCellSizes(JTable table) {
         TableModel model = table.getModel();
-        JTableHeader header = table.getTableHeader();
         TableColumn column;
         for (int i = 0; i < model.getColumnCount(); i++) {
             column = table.getColumnModel().getColumn(i);
-            column.setPreferredWidth(34);
+            column.setPreferredWidth(36);
         }
     }
 }

@@ -3,7 +3,6 @@ package main.components;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 import java.util.Calendar;
 import java.util.Date;
 

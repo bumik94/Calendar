@@ -33,6 +33,37 @@ public class CalendarModel {
         this.currentMonth = currentMonth;
     }
 
+    public int getYear() {
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public void setYear(int year) {
+        calendar.set(Calendar.YEAR, year);
+        currentYear = getYear();
+    }
+
+    public int getMonth() {
+        return calendar.get(Calendar.MONTH);
+    }
+
+    public void setMonth(int month) {
+        calendar.set(Calendar.MONTH, month);
+        currentMonth = getMonth();
+    }
+
+    /**
+     * Parses a field name in default locale with capital first letter.
+     *
+     * @param field Calendar instance field
+     * @param style Calendar class style constant
+     * @return capitalized string representing calendar field
+     */
+    public String getFieldName(int field, int style) {
+        String name = calendar.getDisplayName(field, style, Locale.getDefault());
+
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
+
     /**
      * Parses ordered days of week in short form into an array according to current locale's first day.
      *
