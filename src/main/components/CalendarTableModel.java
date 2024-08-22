@@ -33,4 +33,8 @@ public class CalendarTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         return columnNames[column];
     }
+
+    public Class getColumnClass(int c) {
+        return getValueAt(0, c).getClass();
+    }
 }
