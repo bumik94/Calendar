@@ -1,6 +1,6 @@
 package test;
 
-import test.components.CalendarTable;
+import test.components.CalendarPanel;
 import test.components.models.CalendarModel;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ public class Main {
         c.insets = new Insets(6, 6, 6, 6);
 
         // Lay out components and set visibility
-        frame.add(new CalendarTable(new CalendarModel()), c);
+        frame.add(new CalendarPanel(new CalendarModel()), c);
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);

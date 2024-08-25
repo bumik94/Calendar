@@ -3,18 +3,30 @@ package test.components.models;
 import java.util.*;
 
 public class CalendarModel {
+    /*
+    The CalendarModel doesn't work as expected, the Calendar instance is shared
+    among other occurrences which messes with the inner structure.
+
+    TODO:
+        Change this class to contain only static methods to obtain data
+        from a calendar instance passed to a constructor.
+        Save state of the calendar into a Date field prior to any changes
+        and recall the previous state when finished with a method.
+     */
     private static final int MAX_DAYS_OF_WEEK   = 7;
     private static final int MAX_WEEKS_OF_MONTH = 6;
 
     Calendar calendar;
     int currentYear;
     int currentMonth;
+    int currentDay;
 
     public CalendarModel() {
-        this.calendar = Calendar.getInstance();
-        this.calendar.setMinimalDaysInFirstWeek(1);
-        this.currentYear = calendar.get(Calendar.YEAR);
-        this.currentMonth = calendar.get(Calendar.MONTH);
+        calendar = Calendar.getInstance();
+        calendar.setMinimalDaysInFirstWeek(1);
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonth = calendar.get(Calendar.MONTH);
+        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
     }
 
     private static String capitalize(String s) {
@@ -37,6 +49,14 @@ public class CalendarModel {
         this.currentMonth = currentMonth;
     }
 
+    public int getCurrentDay() {
+        return currentDay;
+    }
+
+    public void setCurrentDay(int currentDay) {
+        this.currentDay = currentDay;
+    }
+
     public int getYear() {
         return calendar.get(Calendar.YEAR);
     }
@@ -53,6 +73,27 @@ public class CalendarModel {
     public void setMonth(int month) {
         calendar.set(Calendar.MONTH, month);
         currentMonth = getMonth();
+    }
+
+    public int getDay() {
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public void setDay(int day) {
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        currentDay = getDay();
+    }
+
+    public void setTime(Date date) {
+        calendar.setTime(date);
+    }
+
+    public Date getTime() {
+        return calendar.getTime();
+    }
+
+    public int get(int field) {
+        return calendar.get(field);
     }
 
     /**
@@ -135,6 +176,7 @@ public class CalendarModel {
         // Set calendar back to current month and year in case of overlap to the next month/year
         calendar.set(Calendar.YEAR, currentYear);
         calendar.set(Calendar.MONTH, currentMonth);
+        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
         return list;
     }
 
